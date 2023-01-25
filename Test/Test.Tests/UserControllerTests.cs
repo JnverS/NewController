@@ -15,14 +15,14 @@ namespace Test.Tests
     public class UserControllerTests
     {
         private int userid = 5;
+        private static DBContextHelper dBContextHelper = new DBContextHelper();
+        private static UsersRepository urh = new UsersRepository(dBContextHelper.Context);
+        private static UserController controller = new UserController(urh);
 
         [Fact]
         public void GetAll()
         {
             
-            DBContextHelper dBContextHelper = new DBContextHelper(); ;
-            UsersRepository urh = new UsersRepository(dBContextHelper.Context);
-            UserController controller = new UserController(urh);
             // Arrange
             IEnumerable<User> Users = dBContextHelper.Context.Users;
             // Act
@@ -33,12 +33,7 @@ namespace Test.Tests
         }
         [Fact]
         public void GetAllNotNull()
-        {
-            DBContextHelper dBContextHelper = new DBContextHelper();
-
-            UsersRepository urh = new UsersRepository(dBContextHelper.Context);
-            //Arrange
-            UserController controller = new UserController(urh);
+        { 
             // Act
             var result = controller.Get();
 
@@ -49,11 +44,7 @@ namespace Test.Tests
         [Fact]
         public void GetId()
         {
-            DBContextHelper dBContextHelper = new DBContextHelper();
-            UsersRepository urh = new UsersRepository(dBContextHelper.Context);
-            // Arrange
-            UserController controller = new UserController(urh);
-            User user = dBContextHelper.Context.Users.FirstOrDefault(p => p.Id == userid); 
+            User? user = dBContextHelper.Context.Users.FirstOrDefault(p => p.Id == userid); 
             // Act
             var result = controller.GetId(5);
 
@@ -63,10 +54,7 @@ namespace Test.Tests
         [Fact]
         public void GetIdNotNull()
         {
-            DBContextHelper dBContextHelper = new DBContextHelper();
-            UsersRepository urh = new UsersRepository(dBContextHelper.Context);
-            // Arrange
-            UserController controller = new UserController(urh);
+
             // Act
             var result = controller.GetId(5);
 
@@ -76,10 +64,6 @@ namespace Test.Tests
         [Fact]
         public void AddUser()
         {
-            DBContextHelper dBContextHelper = new DBContextHelper();
-            UsersRepository urh = new UsersRepository(dBContextHelper.Context);
-            // Arrange
-            UserController controller = new UserController(urh);
             User user = new User
             {
                 Id = 1,
@@ -94,6 +78,6 @@ namespace Test.Tests
             // Assert
             Assert.Equal(user, result);
         }
-      
+
     }
 }
